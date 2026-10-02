@@ -44,9 +44,14 @@
 		await updateUserSettings(localStorage.token, { ui: $settings });
 	};
 
-	$: if (selectedModels.length > 0 && $models.length > 0) {
+	$: chatModels = $models.filter((m) => {
+		const text = `${m?.id ?? ''} ${m?.name ?? ''}`.toLowerCase();
+		return !['embed', 'e5-', 'bge-'].some((term) => text.includes(term));
+	});
+
+	$: if (selectedModels.length > 0 && chatModels.length > 0) {
 		const _selectedModels = selectedModels.map((model) =>
-			$models.map((m) => m.id).includes(model) ? model : ''
+			chatModels.map((m) => m.id).includes(model) ? model : ''
 		);
 
 		if (!equal(_selectedModels, selectedModels)) {
@@ -67,7 +72,7 @@
 					bind:this={selector}
 					id="model"
 					placeholder={$i18n.t('Select a model')}
-					items={$models.map((model) => ({
+					items={chatModels.map((model) => ({
 						value: model.id,
 						label: model.name,
 						model: model

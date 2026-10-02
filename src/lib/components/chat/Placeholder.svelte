@@ -143,17 +143,21 @@
 										}}
 									>
 										<img
+											src="/logo_ki_link.png"
+											alt="KI:Link"
+											class="size-8 object-contain"
+											aria-hidden="true"
+											draggable="false"
+										/>
+										<!-- <img
 											src={`${WEBUI_API_BASE_URL}/models/model/profile/image?id=${model?.id}&lang=${$i18n.language}`}
 											class=" size-9 @sm:size-10 rounded-2xl"
 											aria-hidden="true"
 											draggable="false"
 											on:error={(e) => {
-												// LICENSE covers this Open WebUI fallback logo.
-												// Do not alter, remove, obscure, or replace it except as LICENSE permits:
-												// https://docs.openwebui.com/license.
 												e.currentTarget.src = '/favicon.png';
 											}}
-										/>
+										/> -->
 									</button>
 								</Tooltip>
 							{/each}
@@ -164,7 +168,8 @@
 						class=" text-2xl @sm:text-2xl line-clamp-1 flex items-center"
 						in:fade={{ duration: 100 }}
 					>
-						{#if models[selectedModelIdx]?.name}
+						<span class="line-clamp-1">KI:Link</span>
+						<!-- {#if models[selectedModelIdx]?.name}
 							<Tooltip
 								content={models[selectedModelIdx]?.name}
 								placement="top"
@@ -176,7 +181,7 @@
 							</Tooltip>
 						{:else}
 							{$i18n.t('Hello, {{name}}', { name: $user?.name })}
-						{/if}
+						{/if} -->
 					</div>
 				</div>
 

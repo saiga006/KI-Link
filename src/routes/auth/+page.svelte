@@ -436,6 +436,7 @@
 												placeholder={$i18n.t('Enter Your API Key')}
 												autocomplete="off"
 												name="api-key"
+												required={false}
 											/>
 										</div>
 									</div>
@@ -677,16 +678,14 @@
 			<div class="fixed m-10 z-50">
 				<div class="flex space-x-2">
 					<div class=" self-center">
-						<!-- LICENSE covers this Open WebUI sign-in logo.
-						Do not alter, remove, obscure, or replace it except as LICENSE permits:
-						https://docs.openwebui.com/license. -->
-						<img
+						<img src="/logo_ki_link.png" alt="KI:Link" class="size-6 object-contain" />
+						<!-- <img
 							id="logo"
 							crossorigin="anonymous"
 							src="{WEBUI_BASE_URL}/static/favicon.png"
 							class=" w-6 rounded-full"
 							alt=""
-						/>
+						/> -->
 					</div>
 				</div>
 			</div>

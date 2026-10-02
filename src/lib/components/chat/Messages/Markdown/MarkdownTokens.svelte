@@ -64,11 +64,13 @@
 
 	const HIDDEN_TOOL_NAMES = new Set(['search_web', 'fetch_url']);
 
-	const isHiddenDetailToken = (token: Token & { attributes?: { type?: string; name?: string } }) =>
+	// Hide all tool-call dropdowns except those awaiting user approval or ask_user.
+	const isHiddenDetailToken = (token: Token & { attributes?: { type?: string; name?: string; status?: string } }) =>
 		token?.type === 'details' &&
 		(token?.attributes?.type === 'reasoning' ||
 			(token?.attributes?.type === 'tool_calls' &&
-				HIDDEN_TOOL_NAMES.has(token?.attributes?.name ?? '')));
+				token?.attributes?.name !== 'ask_user' &&
+				token?.attributes?.status !== 'pending'));
 
 	const isGroupableDetailToken = (token: Token & { attributes?: { type?: string } }) => {
 		return token?.type === 'details' && GROUPABLE_DETAIL_TYPES.has(token?.attributes?.type ?? '');

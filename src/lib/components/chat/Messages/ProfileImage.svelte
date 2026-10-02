@@ -6,7 +6,8 @@
 	// LICENSE covers this Open WebUI fallback logo.
 	// Do not alter, remove, obscure, or replace it except as LICENSE permits:
 	// https://docs.openwebui.com/license.
-	const FALLBACK_SRC = `${WEBUI_BASE_URL}/static/favicon.png`;
+	const FALLBACK_SRC = '/logo_ki_link.png';
+	// const FALLBACK_SRC = `${WEBUI_BASE_URL}/static/favicon.png`;
 
 	export let src = FALLBACK_SRC;
 </script>

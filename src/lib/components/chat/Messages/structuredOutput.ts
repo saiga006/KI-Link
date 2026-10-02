@@ -400,7 +400,7 @@ export function buildOutputDisplayItems(output: OutputItem[] = []): OutputDispla
 
 		if (
 			item.type === 'reasoning' ||
-			(item.type === 'function_call' && (item.name === 'search_web' || item.name === 'fetch_url'))
+			(item.type === 'function_call' && item.name !== 'ask_user' && item.status !== 'pending')
 		) {
 			return;
 		}

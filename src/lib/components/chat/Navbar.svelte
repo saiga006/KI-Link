@@ -120,7 +120,8 @@
 							<div
 								class="min-w-0 truncate py-1 text-left text-[0.9375rem] font-normal text-gray-700 dark:text-gray-300"
 							>
-								{title || chat?.chat?.title || $i18n.t('New Chat')}
+								<!-- {title || chat?.chat?.title || $i18n.t('New Chat')} -->
+								KI:Link
 							</div>
 
 							{#if shareEnabled && chat && (chat.id || $temporaryChatEnabled)}
@@ -151,11 +152,12 @@
 							{/if}
 						</div>
 					{:else}
-						<div class="pointer-events-none invisible flex max-w-full min-w-0 items-center gap-2">
+						<div class="pointer-events-none flex max-w-full min-w-0 items-center gap-2">
 							<div
 								class="min-w-0 truncate py-1 text-left text-[0.9375rem] font-normal text-gray-700 dark:text-gray-300"
 							>
-								{$i18n.t('New Chat')}
+								<!-- {$i18n.t('New Chat')} -->
+								KI:Link
 							</div>
 						</div>
 					{/if}

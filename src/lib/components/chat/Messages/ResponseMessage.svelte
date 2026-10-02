@@ -663,10 +663,16 @@
 		style="scroll-margin-top: 3rem;"
 	>
 		<div class={`shrink-0 ltr:mr-2 rtl:ml-2 hidden @lg:flex mt-0.5 `}>
-			<ProfileImage
+			<img
+				src="/logo_ki_link.png"
+				alt="KI:Link"
+				class="size-7 object-contain assistant-message-profile-image"
+				draggable="false"
+			/>
+			<!-- <ProfileImage
 				src={`${WEBUI_API_BASE_URL}/models/model/profile/image?id=${model?.id}&lang=${$i18n.language}`}
 				className={'size-7 assistant-message-profile-image'}
-			/>
+			/> -->
 		</div>
 
 		<div class="flex-auto w-0 pl-1 relative">
