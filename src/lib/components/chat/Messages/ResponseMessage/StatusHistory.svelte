@@ -30,6 +30,13 @@
 {#if history && history.length > 0}
 	{#if status?.hidden !== true}
 		<div class="text-[0.9375rem] flex flex-col w-full">
+			<div class="w-full">
+				<div class="flex items-start gap-2">
+					<StatusItem {status} />
+				</div>
+			</div>
+
+			<!-- Hidden: expandable step-by-step status history
 			<button
 				class="w-full"
 				aria-label={$i18n.t('Toggle status history')}
@@ -71,6 +78,7 @@
 					{/if}
 				</div>
 			{/if}
+			-->
 		</div>
 	{/if}
 {/if}

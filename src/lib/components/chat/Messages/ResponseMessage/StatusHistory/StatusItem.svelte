@@ -12,6 +12,7 @@
 {#if !status?.hidden}
 	<div class="status-description flex items-center gap-2 py-0.5 w-full text-left">
 		{#if status?.action === 'web_search' && (status?.urls || status?.items)}
+			<!-- Hidden: collapsible results (queries, URLs, scraped content)
 			<WebSearchResults {status}>
 				<div class="flex flex-col justify-center -space-y-0.5">
 					<div
@@ -19,9 +20,6 @@
 							? 'shimmer'
 							: ''} text-[0.9375rem] line-clamp-1 text-wrap"
 					>
-						<!-- $i18n.t("Generating search query") -->
-						<!-- $i18n.t("No search query generated") -->
-						<!-- $i18n.t('Searched {{count}} sites') -->
 						{#if status?.description?.includes('{{count}}')}
 							{$i18n.t(status?.description, {
 								count: (status?.urls || status?.items).length
@@ -36,6 +34,16 @@
 					</div>
 				</div>
 			</WebSearchResults>
+			-->
+			<div class="flex flex-col justify-center -space-y-0.5">
+				<div
+					class="{(done || status?.done) === false
+						? 'shimmer'
+						: ''} text-[0.9375rem] line-clamp-1 text-wrap"
+				>
+					{(done || status?.done) === false ? $i18n.t('Searching the web...') : $i18n.t('Searched the web')}
+				</div>
+			</div>
 		{:else if status?.action === 'knowledge_search'}
 			<div class="flex flex-col justify-center -space-y-0.5">
 				<div
@@ -58,6 +66,7 @@
 					{$i18n.t(`Searching`)}
 				</div>
 
+				<!-- Hidden: raw search query chips
 				<div class=" flex gap-1 flex-wrap mt-2">
 					{#each status.queries as query, idx (query)}
 						<div
@@ -73,6 +82,7 @@
 						</div>
 					{/each}
 				</div>
+				-->
 			</div>
 		{:else if status?.action === 'queries_generated' && status?.queries}
 			<div class="flex flex-col justify-center -space-y-0.5">
@@ -84,6 +94,7 @@
 					{$i18n.t(`Querying`)}
 				</div>
 
+				<!-- Hidden: raw query chips
 				<div class=" flex gap-1 flex-wrap mt-2">
 					{#each status.queries as query, idx (query)}
 						<div
@@ -99,6 +110,7 @@
 						</div>
 					{/each}
 				</div>
+				-->
 			</div>
 		{:else if status?.action === 'sources_retrieved' && status?.count !== undefined}
 			<div class="flex flex-col justify-center -space-y-0.5">

@@ -967,10 +967,15 @@
 							Do not alter, remove, obscure, or replace it except as LICENSE permits:
 							https://docs.openwebui.com/license. -->
 								<img
+									src="/logo_ki_link.png"
+									class="sidebar-new-chat-icon size-5 object-contain group-hover:hidden"
+									alt="KI:Link"
+								/>
+								<!-- <img
 									src="{WEBUI_BASE_URL}/static/favicon.png"
 									class="sidebar-new-chat-icon size-5 rounded-full group-hover:hidden"
 									alt=""
-								/>
+								/> -->
 
 								<Sidebar className="size-4 hidden group-hover:flex" />
 							</div>
@@ -1110,11 +1115,16 @@
 					Do not alter, remove, obscure, or replace it except as LICENSE permits:
 					https://docs.openwebui.com/license. -->
 						<img
+							src="/logo_ki_link.png"
+							class="sidebar-new-chat-icon size-5 object-contain"
+							alt="KI:Link"
+						/>
+						<!-- <img
 							crossorigin="anonymous"
 							src="{WEBUI_BASE_URL}/static/favicon.png"
 							class="sidebar-new-chat-icon size-5 rounded-full"
 							alt=""
-						/>
+						/> -->
 					</a>
 
 					<a href="/" class="flex flex-1 px-0.5" on:click={newChatHandler}>
@@ -1125,7 +1135,8 @@
 							id="sidebar-webui-name"
 							class=" self-center font-normal text-gray-700 dark:text-gray-200"
 						>
-							{$WEBUI_NAME}
+							KI:Link
+							<!-- {$WEBUI_NAME} -->
 						</div>
 					</a>
 					<Tooltip

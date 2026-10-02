@@ -1257,7 +1257,8 @@
 			// visual, textual, symbolic identifiers, metadata, and surrounding UI.
 			// Do not alter, remove, obscure, or replace it except as LICENSE permits:
 			// https://docs.openwebui.com/license.
-			await WEBUI_NAME.set(backendConfig.name);
+			// await WEBUI_NAME.set(backendConfig.name);
+			await WEBUI_NAME.set('KI:Link');
 
 			if ($config) {
 				await setupSocket($config.features?.enable_websocket ?? true);
@@ -1374,7 +1375,8 @@
 	Do not alter, remove, obscure, or replace it except as LICENSE permits:
 	https://docs.openwebui.com/license. -->
 	<title>{$WEBUI_NAME}</title>
-	<link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" />
+	<!-- <link crossorigin="anonymous" rel="icon" href="{WEBUI_BASE_URL}/static/favicon.png" /> -->
+	<link rel="icon" type="image/png" href="/logo_ki_link.png" />
 
 	<meta name="apple-mobile-web-app-title" content={$WEBUI_NAME} />
 	<meta name="description" content={$WEBUI_NAME} />

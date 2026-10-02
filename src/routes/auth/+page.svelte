@@ -9,6 +9,7 @@
 	import { page } from '$app/stores';
 
 	import { getBackendConfig } from '$lib/apis';
+	import { getUserSettings, updateUserSettings } from '$lib/apis/users';
 	import {
 		ldapUserSignIn,
 		getSessionUser,
@@ -41,6 +42,40 @@
 	let confirmPassword = '';
 
 	let ldapUsername = '';
+	let apiKey = '';
+
+	const DEFAULT_OPENAI_API_URL = 'https://api.openai.com/v1';
+
+	const saveApiKey = async (token: string) => {
+		const key = apiKey.trim();
+		if (!key || !token) return;
+
+		localStorage.setItem('openai_api_key', key);
+
+		// Mirror into Settings > Connections (direct connections) as the OpenAI key
+		try {
+			const userSettings = await getUserSettings(token);
+			const ui = userSettings?.ui ?? {};
+			const dc = ui.directConnections ?? {
+				OPENAI_API_BASE_URLS: [],
+				OPENAI_API_KEYS: [],
+				OPENAI_API_CONFIGS: {}
+			};
+
+			const idx = dc.OPENAI_API_BASE_URLS.length > 0 ? 0 : -1;
+			if (idx === -1) {
+				dc.OPENAI_API_BASE_URLS.push(DEFAULT_OPENAI_API_URL);
+				dc.OPENAI_API_KEYS.push(key);
+				dc.OPENAI_API_CONFIGS[0] = {};
+			} else {
+				dc.OPENAI_API_KEYS[idx] = key;
+			}
+
+			await updateUserSettings(token, { ui: { ...ui, directConnections: dc } });
+		} catch (error) {
+			toast.error(`${error}`);
+		}
+	};
 
 	let submitting = false;
 
@@ -51,6 +86,7 @@
 			if (sessionUser.token) {
 				localStorage.token = sessionUser.token;
 			}
+			await saveApiKey(sessionUser.token);
 			$socket.emit('user-join', { auth: { token: sessionUser.token } });
 			await user.set(sessionUser);
 			await config.set(await getBackendConfig());
@@ -238,7 +274,7 @@
 							class="flex items-center justify-center gap-3 text-xl sm:text-2xl text-center font-normal dark:text-gray-200"
 						>
 							<div>
-								{$i18n.t('Signing in to {{WEBUI_NAME}}', { WEBUI_NAME: $WEBUI_NAME })}
+								{$i18n.t('Signing in to {{WEBUI_NAME}}', { WEBUI_NAME: 'KI:Link' })}
 							</div>
 
 							<div>
@@ -249,11 +285,15 @@
 				{:else}
 					<div class="my-auto flex flex-col justify-center items-center">
 						<div id="auth-login-card" class=" sm:max-w-md my-auto pb-10 w-full dark:text-gray-100">
-							{#if $config?.metadata?.auth_logo_position === 'center'}
+							<div class="flex justify-center">
+								<img
+									src="/logo_ki_link.png"
+									alt="KI:Link"
+									class="h-16 object-contain mx-auto mb-4"
+								/>
+							</div>
+							<!-- {#if $config?.metadata?.auth_logo_position === 'center'}
 								<div class="flex justify-center mb-6">
-									<!-- LICENSE covers this Open WebUI sign-in logo.
-									Do not alter, remove, obscure, or replace it except as LICENSE permits:
-									https://docs.openwebui.com/license. -->
 									<img
 										id="logo"
 										crossorigin="anonymous"
@@ -262,7 +302,7 @@
 										alt="{$WEBUI_NAME} logo"
 									/>
 								</div>
-							{/if}
+							{/if} -->
 							<form
 								class=" flex flex-col justify-center"
 								on:submit={(e) => {
@@ -273,13 +313,13 @@
 								<div class="mb-1">
 									<div class=" text-2xl font-normal">
 										{#if $config?.onboarding ?? false}
-											{$i18n.t(`Get started with {{WEBUI_NAME}}`, { WEBUI_NAME: $WEBUI_NAME })}
+											{$i18n.t(`Get started with {{WEBUI_NAME}}`, { WEBUI_NAME: 'KI:Link' })}
 										{:else if mode === 'ldap'}
-											{$i18n.t(`Sign in to {{WEBUI_NAME}} with LDAP`, { WEBUI_NAME: $WEBUI_NAME })}
+											{$i18n.t(`Sign in to {{WEBUI_NAME}} with LDAP`, { WEBUI_NAME: 'KI:Link' })}
 										{:else if mode === 'signin'}
-											{$i18n.t(`Sign in to {{WEBUI_NAME}}`, { WEBUI_NAME: $WEBUI_NAME })}
+											{$i18n.t(`Sign in to {{WEBUI_NAME}}`, { WEBUI_NAME: 'KI:Link' })}
 										{:else}
-											{$i18n.t(`Sign up to {{WEBUI_NAME}}`, { WEBUI_NAME: $WEBUI_NAME })}
+											{$i18n.t(`Sign up to {{WEBUI_NAME}}`, { WEBUI_NAME: 'KI:Link' })}
 										{/if}
 									</div>
 
@@ -383,6 +423,21 @@
 												/>
 											</div>
 										{/if}
+
+										<div class="mt-2">
+											<label for="api-key" class="text-sm font-normal text-left mb-1 block"
+												>{$i18n.t('API Key')} ({$i18n.t('optional')})</label
+											>
+											<SensitiveInput
+												bind:value={apiKey}
+												type="password"
+												id="api-key"
+												class="my-0.5 w-full text-sm outline-hidden bg-transparent placeholder:text-gray-300 dark:placeholder:text-gray-600"
+												placeholder={$i18n.t('Enter Your API Key')}
+												autocomplete="off"
+												name="api-key"
+											/>
+										</div>
 									</div>
 								{/if}
 								<div class="mt-5">

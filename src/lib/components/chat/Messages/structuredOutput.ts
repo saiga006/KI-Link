@@ -398,6 +398,13 @@ export function buildOutputDisplayItems(output: OutputItem[] = []): OutputDispla
 			return;
 		}
 
+		if (
+			item.type === 'reasoning' ||
+			(item.type === 'function_call' && (item.name === 'search_web' || item.name === 'fetch_url'))
+		) {
+			return;
+		}
+
 		if (item.type && GROUPABLE_OUTPUT_TYPES.has(item.type)) {
 			const token = buildDetailToken(item, index === output.length - 1, toolOutputByCallId);
 			if (token) {

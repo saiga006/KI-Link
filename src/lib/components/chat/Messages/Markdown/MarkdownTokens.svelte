@@ -62,6 +62,14 @@
 
 	const GROUPABLE_DETAIL_TYPES = new Set(['tool_calls', 'reasoning', 'code_interpreter']);
 
+	const HIDDEN_TOOL_NAMES = new Set(['search_web', 'fetch_url']);
+
+	const isHiddenDetailToken = (token: Token & { attributes?: { type?: string; name?: string } }) =>
+		token?.type === 'details' &&
+		(token?.attributes?.type === 'reasoning' ||
+			(token?.attributes?.type === 'tool_calls' &&
+				HIDDEN_TOOL_NAMES.has(token?.attributes?.name ?? '')));
+
 	const isGroupableDetailToken = (token: Token & { attributes?: { type?: string } }) => {
 		return token?.type === 'details' && GROUPABLE_DETAIL_TYPES.has(token?.attributes?.type ?? '');
 	};
@@ -84,6 +92,10 @@
 		};
 
 		for (const token of tokenList) {
+			if (isHiddenDetailToken(token)) {
+				continue;
+			}
+
 			if (isGroupableDetailToken(token)) {
 				detailGroup.push(token);
 			} else {

@@ -210,6 +210,7 @@
 						</button>
 					</Tooltip>
 
+					<!-- Hidden: Capture, Attach Webpage, Attach Files, Attach Notes, Attach Knowledge
 					<Tooltip
 						content={fileUploadCapableModels.length !== selectedModels.length
 							? $i18n.t('Model(s) do not support file upload')
@@ -359,6 +360,7 @@
 							</div>
 						</button>
 					</Tooltip>
+					-->
 
 					<Tooltip
 						content={fileUploadCapableModels.length !== selectedModels.length
