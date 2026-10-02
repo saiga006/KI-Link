@@ -10,6 +10,7 @@
 
 	import { getBackendConfig } from '$lib/apis';
 	import { getUserSettings, updateUserSettings } from '$lib/apis/users';
+	import { getOpenAIConfig, updateOpenAIConfig } from '$lib/apis/openai';
 	import {
 		ldapUserSignIn,
 		getSessionUser,
@@ -46,11 +47,40 @@
 
 	const DEFAULT_OPENAI_API_URL = 'https://api.openai.com/v1';
 
-	const saveApiKey = async (token: string) => {
+	const saveApiKey = async (token: string, role?: string) => {
 		const key = apiKey.trim();
 		if (!key || !token) return;
 
-		localStorage.setItem('openai_api_key', key);
+		// localStorage.setItem('openai_api_key', key);
+
+		// Backend connections endpoints are admin-only; other roles fall back to user direct connections below.
+		if (role === 'admin') {
+			try {
+				const openaiConfig = await getOpenAIConfig(token);
+				const urls = openaiConfig?.OPENAI_API_BASE_URLS ?? [];
+				const keys = [...(openaiConfig?.OPENAI_API_KEYS ?? [])];
+				const configs = openaiConfig?.OPENAI_API_CONFIGS ?? {};
+
+				if (urls.length === 0) {
+					urls.push(DEFAULT_OPENAI_API_URL);
+					keys.push(key);
+					configs['0'] = {};
+				} else {
+					keys[0] = key;
+				}
+
+				await updateOpenAIConfig(token, {
+					ENABLE_OPENAI_API: openaiConfig?.ENABLE_OPENAI_API ?? true,
+					OPENAI_API_BASE_URLS: urls,
+					OPENAI_API_KEYS: keys,
+					OPENAI_API_CONFIGS: configs
+				});
+				return;
+			} catch (error) {
+				toast.error(`${error}`);
+				return;
+			}
+		}
 
 		// Mirror into Settings > Connections (direct connections) as the OpenAI key
 		try {
@@ -86,7 +116,7 @@
 			if (sessionUser.token) {
 				localStorage.token = sessionUser.token;
 			}
-			await saveApiKey(sessionUser.token);
+			await saveApiKey(sessionUser.token, sessionUser.role);
 			$socket.emit('user-join', { auth: { token: sessionUser.token } });
 			await user.set(sessionUser);
 			await config.set(await getBackendConfig());

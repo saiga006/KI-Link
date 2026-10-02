@@ -77,9 +77,10 @@
 				// LICENSE covers these Open WebUI splash logo assets.
 				// Do not alter, remove, obscure, or replace them except as LICENSE permits:
 				// https://docs.openwebui.com/license.
-				const preloadHref = document.documentElement.classList.contains('dark')
-					? '/static/splash-dark.png'
-					: '/static/splash.png';
+				// const preloadHref = document.documentElement.classList.contains('dark')
+				// 	? '/static/splash-dark.png'
+				// 	: '/static/splash.png';
+				const preloadHref = '/logo_ki_link.png';
 				const preload = document.createElement('link');
 				preload.rel = 'preload';
 				preload.as = 'image';
@@ -105,13 +106,16 @@
 				const logo = document.createElement('img');
 				logo.id = 'logo';
 				logo.style =
-					'position: absolute; width: auto; height: 6rem; top: 44%; left: 50%; transform: translateX(-50%); display:block;';
+					'position: absolute; width: auto; height: 4rem; top: 44%; left: 50%; transform: translateX(-50%); display:block;';
 				logo.loading = 'eager';
 				logo.fetchPriority = 'high';
 				// LICENSE covers this Open WebUI splash logo.
 				// Do not alter, remove, obscure, or replace it except as LICENSE permits:
 				// https://docs.openwebui.com/license.
-				logo.src = isDarkMode ? '/static/splash-dark.png' : '/static/splash.png';
+				// logo.src = isDarkMode ? '/static/splash-dark.png' : '/static/splash.png';
+				logo.src = '/logo_ki_link.png';
+				logo.alt = 'KI:Link';
+				logo.className = 'animate-pulse';
 
 				document.addEventListener('DOMContentLoaded', function () {
 					const splash = document.getElementById('splash-screen');
@@ -156,17 +160,23 @@
 					align-items: center;
 				"
 			>
-				<!-- LICENSE covers this Open WebUI splash logo.
-				Do not alter, remove, obscure, or replace it except as LICENSE permits:
-				https://docs.openwebui.com/license. -->
 				<img
+					id="logo-her"
+					src="/logo_ki_link.png"
+					alt="KI:Link"
+					loading="eager"
+					fetchpriority="high"
+					class="size-16 object-contain animate-pulse mx-auto"
+					style="width: 4rem; height: 4rem; object-fit: contain"
+				/>
+				<!-- <img
 					id="logo-her"
 					style="width: auto; height: 13rem"
 					src="/static/splash.png"
 					loading="eager"
 					fetchpriority="high"
 					class="animate-pulse-fast"
-				/>
+				/> -->
 
 				<div style="position: relative; width: 24rem; margin-top: 0.5rem">
 					<div

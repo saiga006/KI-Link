@@ -3,6 +3,7 @@
 	const i18n = getContext('i18n');
 
 	import StatusItem from './StatusHistory/StatusItem.svelte';
+	import Spinner from '$lib/components/common/Spinner.svelte';
 	import equal from 'fast-deep-equal';
 	export let statusHistory = [];
 	export let expand = false;
@@ -25,15 +26,26 @@
 	$: if (!equal(statusHistory, history)) {
 		history = statusHistory;
 	}
+
+	$: webSearchActive =
+		(status?.action === 'web_search' || status?.action === 'web_search_queries_generated') &&
+		status?.done === false;
 </script>
 
 {#if history && history.length > 0}
 	{#if status?.hidden !== true}
 		<div class="text-[0.9375rem] flex flex-col w-full">
 			<div class="w-full">
-				<div class="flex items-start gap-2">
-					<StatusItem {status} />
-				</div>
+				{#if webSearchActive}
+					<div class="flex items-center gap-2 text-sm text-gray-500 py-1">
+						<Spinner className="size-4" />
+						<span>{$i18n.t('Searching the web...')}</span>
+					</div>
+				{:else}
+					<div class="flex items-start gap-2">
+						<StatusItem {status} />
+					</div>
+				{/if}
 			</div>
 
 			<!-- Hidden: expandable step-by-step status history
